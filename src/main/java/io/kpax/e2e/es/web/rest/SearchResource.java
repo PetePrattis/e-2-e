@@ -48,8 +48,9 @@ public class SearchResource {
 				Pattern pattern = Pattern.compile(regExp, Pattern.CASE_INSENSITIVE);
 				Matcher firstnameMatcher = pattern.matcher(user.getFirstName());
 				Matcher lastnameMatcher = pattern.matcher(user.getLastName());
+                Matcher emailMatcher = pattern.matcher(user.getEmail());
 
-				if (firstnameMatcher.matches() || lastnameMatcher.matches()) {
+				if (firstnameMatcher.matches() || lastnameMatcher.matches() || emailMatcher.matches()) {
 					results.add(user);
 				}
 			}
