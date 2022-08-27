@@ -38,8 +38,8 @@ public class SearchResource {
 		USERS.add(new UserDTO("gap", "George", "Apostolidis", "gap@mail.com", true, "EL", new HashSet<>()));
 	}
 
-	@RequestMapping(value = "/search/{query}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<UserDTO>> search(@PathVariable("query") String query) {
+	@RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<UserDTO>> search(String query, String sort) {
 		List<UserDTO> results = new ArrayList<>();
 
 		if (query != null && !query.trim().isEmpty()) {
@@ -58,7 +58,16 @@ public class SearchResource {
 		}
 
 		if(!results.isEmpty()) {
-            results.sort(Comparator.comparing(UserDTO::getLastName));
+            switch(sort) {
+                case "firstname":
+                    results.sort(Comparator.comparing(UserDTO::getFirstName));
+                    break;
+                case "email":
+                    results.sort(Comparator.comparing(UserDTO::getEmail));
+                    break;
+                default:
+                    results.sort(Comparator.comparing(UserDTO::getLastName));
+            }
         }
 
 		return new ResponseEntity<>(results, HttpStatus.OK);
