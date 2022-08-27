@@ -10,12 +10,13 @@
     </div>
     <div class="row">
         <div class="col-md-4">
-            <button id="go" type="button" class="btn btn-default" data-ng-click="vm.doSearch(vm.search.searchTerm)">Go</button>
+            <button id="go" type="button" style="float: left;" class="btn btn-default" data-ng-click="vm.doSearch(vm.search.searchTerm)">Go</button>
+            <button id="clear" type="button" style="float: right;" class="btn btn-default" data-ng-click="vm.doClear()">Clear</button>
         </div>
     </div>
-	
+
 	<br/>
-	
+
 	<div class="row">
 		<b>Results</b>
 		<table class="table">
