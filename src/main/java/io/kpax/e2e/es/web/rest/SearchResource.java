@@ -36,7 +36,7 @@ public class SearchResource {
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<UserDTO>> search(String query, String sort, String order) {
+	public ResponseEntity<List<UserDTO>> search(String query, String sort, String order) { //refactor service to use query params instead of path params
 		List<UserDTO> results = new ArrayList<>();
 
 		if (query != null && !query.trim().isEmpty()) {
@@ -46,7 +46,7 @@ public class SearchResource {
 				Pattern pattern = Pattern.compile(regExp, Pattern.CASE_INSENSITIVE);
 				Matcher firstnameMatcher = pattern.matcher(user.getFirstName());
 				Matcher lastnameMatcher = pattern.matcher(user.getLastName());
-                Matcher emailMatcher = pattern.matcher(user.getEmail().substring(0, user.getEmail().indexOf('.')));
+                Matcher emailMatcher = pattern.matcher(user.getEmail().substring(0, user.getEmail().indexOf('.'))); //trim email to match in given regex pattern
 
 				if (firstnameMatcher.matches() || lastnameMatcher.matches() || emailMatcher.matches()) {
 					results.add(user);
@@ -54,7 +54,7 @@ public class SearchResource {
 			}
 		}
 
-        if(!results.isEmpty()) {
+        if(!results.isEmpty()) { //sort if there are results
             switch(sort) {
                 case "firstName":
                     if(order.equals("asc")) {
@@ -72,7 +72,7 @@ public class SearchResource {
                         results.sort(Comparator.comparing(UserDTO::getEmail, Collections.reverseOrder()));
                     }
                     break;
-                default:
+                default: //default is lastName or from go button
                     if(order.equals("asc")) {
                         results.sort(Comparator.comparing(UserDTO::getLastName));
                     }
