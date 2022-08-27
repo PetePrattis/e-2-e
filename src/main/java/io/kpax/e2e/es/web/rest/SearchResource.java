@@ -1,6 +1,7 @@
 package io.kpax.e2e.es.web.rest;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -55,6 +56,10 @@ public class SearchResource {
 				}
 			}
 		}
+
+		if(!results.isEmpty()) {
+            results.sort(Comparator.comparing(UserDTO::getLastName));
+        }
 
 		return new ResponseEntity<>(results, HttpStatus.OK);
 	}
