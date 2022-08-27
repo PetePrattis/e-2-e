@@ -1,9 +1,6 @@
 package io.kpax.e2e.es.web.rest;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,7 +36,7 @@ public class SearchResource {
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<UserDTO>> search(String query, String sort) {
+	public ResponseEntity<List<UserDTO>> search(String query, String sort, String order) {
 		List<UserDTO> results = new ArrayList<>();
 
 		if (query != null && !query.trim().isEmpty()) {
@@ -57,16 +54,31 @@ public class SearchResource {
 			}
 		}
 
-		if(!results.isEmpty()) {
+        if(!results.isEmpty()) {
             switch(sort) {
-                case "firstname":
-                    results.sort(Comparator.comparing(UserDTO::getFirstName));
+                case "firstName":
+                    if(order.equals("asc")) {
+                        results.sort(Comparator.comparing(UserDTO::getFirstName));
+                    }
+                    else {
+                        results.sort(Comparator.comparing(UserDTO::getFirstName, Collections.reverseOrder()));
+                    }
                     break;
                 case "email":
-                    results.sort(Comparator.comparing(UserDTO::getEmail));
+                    if(order.equals("asc")) {
+                        results.sort(Comparator.comparing(UserDTO::getEmail));
+                    }
+                    else {
+                        results.sort(Comparator.comparing(UserDTO::getEmail, Collections.reverseOrder()));
+                    }
                     break;
                 default:
-                    results.sort(Comparator.comparing(UserDTO::getLastName));
+                    if(order.equals("asc")) {
+                        results.sort(Comparator.comparing(UserDTO::getLastName));
+                    }
+                    else {
+                        results.sort(Comparator.comparing(UserDTO::getLastName, Collections.reverseOrder()));
+                    }
             }
         }
 
