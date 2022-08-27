@@ -9,7 +9,7 @@
 
     function SearchController ($scope, $state, $http) {
         var vm = this;
-		
+
         vm.doSearch = function() {
 			$http({
 				method: 'GET',
@@ -19,6 +19,11 @@
 					vm.search.users = response.data
 				}
 			});
+		};
+
+		vm.doClear = function() {
+		    this.search.searchTerm = '';
+		    this.search.users = [];
 		};
     }
 })();
