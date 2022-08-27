@@ -10,10 +10,14 @@
     function SearchController ($scope, $state, $http) {
         var vm = this;
 
-        vm.doSearch = function() {
+        vm.doSearch = function(term, sort) {
 			$http({
 				method: 'GET',
-				url: "http://localhost:8080/api/search/" + vm.search.searchTerm
+				url: "http://localhost:8080/api/search",
+				params: {
+				    query: vm.search.searchTerm,
+				    sort: typeof sort === 'undefined' ? '' : sort
+				}
 			}).then(function successCallback(response) {
 				if (response.status == 200) {
 					vm.search.users = response.data
@@ -22,8 +26,8 @@
 		};
 
 		vm.doClear = function() {
-		    this.search.searchTerm = '';
-		    this.search.users = [];
+		    vm.search.searchTerm = '';
+		    vm.search.users = [];
 		};
     }
 })();
